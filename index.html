@@ -162,6 +162,208 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-DOM操作" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/15/DOM操作/">DOM操作</a>
+    </h1>
+  
+
+        
+        <a href="/2017/06/15/DOM操作/" class="archive-article-date">
+  	<time datetime="2017-06-15T09:53:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1： dom对象的innerText和innerHTML有什么区别？</strong></p>
+<p>innerHTML支持HTML；innertext只支持纯文本。<br><strong>写：</strong></p>
+<pre><code> div1.innerHTML=&apos;&lt;i&gt;hello world&lt;/i&gt;&apos;   //输出 hello world(斜体)
+
+
+
+div1.innerText=&apos;&lt;i&gt;hello world&lt;/i&gt;&apos;   //输出&lt;i&gt;hello world&lt;/i&gt;
+</code></pre><p><strong>读：</strong></p>
+<pre><code>&lt;div&gt;
+     &lt;p&gt;
+         123
+         &lt;span&gt;456&lt;/span&gt;
+    &lt;/p&gt;
+&lt;/div&gt;
+var ct = document.getElementsByTagName(&apos;div&apos;)
+
+console.log(ct.innerHTML) 
+//&lt;p&gt;123&lt;span&gt;456&lt;/span&gt;&lt;/p&gt;
+</code></pre><p><strong>innerHTML 会输出HTML标签</strong></p>
+<pre><code>console.log(ct.innerText)   
+//123456  
+</code></pre><p><strong>innerText 会忽略HTML标签</strong></p>
+<p><strong>2： elem.children和elem.childNodes的区别？</strong></p>
+<ul>
+<li>elem.children返回元素中的元素子节点，是HTMLCollection的实例；</li>
+<li>elem.childNodes返回元素中的所有子节点（包括空白文本节点），childNodes中保存着一个NodeList类数组对象（有length属性但并不是Array的实例），可通过方括号语法来访问NodeList的值。</li>
+</ul>
+<p>大多数情况下使用children属性，在元素只包含元素子节点时，这两个属性的值相同。</p>
+<pre><code>![&lt;body&gt;    
+    &lt;h1&gt;Hello&lt;/h1&gt;
+    &lt;p&gt;abcabc&lt;/p&gt;
+&lt;/body][1]
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/6005909-ee7b602b4adf7991.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="此处输入图片的描述"><br><strong>3：查询元素有几种常见的方法？ES5的元素选择方法是什么?</strong></p>
+<p> <strong>getElementById() //(查符合的ID)</strong></p>
+<p>返回匹配指定id属性的元素节点。</p>
+<pre><code>var elem = document.getElementById(&apos;id名字&apos;)
+</code></pre><p><strong>getElementsByClassName() //(查所有符合的class)</strong></p>
+<p>返回一个类似数组的对象（HTMLCollection类型的对象），包括了所有class名字符合条件的元素（搜索范围包括本身），元素的变化实时反映在返回结果中。</p>
+<pre><code>var elements = document.getElementsByClassName(names)
+</code></pre><p>注：names参数可以是多个空格分隔的class名字，返回同时具有这些节点的元素</p>
+<pre><code>document.getElementsByClassName(&apos;warp text&apos;)
+</code></pre><p><strong>getElementsByTagName() //(查所有符合的标签)</strong></p>
+<p>返回所有指定标签的元素(包括本身)，返回值是一个HTMLCollection对象，搜索结果是一个动态集合，任何元素的变化都会实时反映在返回的集合中。</p>
+<pre><code>var paras = document.getElementsByTagName(&quot;p&quot;)
+// 返回当前文档的所有p元素节点
+</code></pre><p>如果参数是大写，会将参数转为小写后，再进行搜索。</p>
+<p><strong>getElementsByName() //(查找拥有name属性的元素)</strong></p>
+<p>getElementsByName方法用于选择拥有name属性的HTML元素，比如form、img、frame、embed和object，返回一个NodeList格式的对象，不会实时反映元素的变化。</p>
+<pre><code>// 假定有一个表单是
+  &lt;form name=&quot;x&quot;&gt;&lt;/form&gt;
+  var forms = document.getElementsByName(&quot;x&quot;);
+  forms[0].tagName // &quot;FORM&quot;
+</code></pre><p>注意，在IE浏览器使用这个方法，会将没有name属性、但有同名id属性的元素也返回，所以name和id属性最好设为不一样的值。</p>
+<p><strong>ES5的元素</strong></p>
+<p><strong>querySelector() //(查找第一个符合要求的元素)</strong></p>
+<p>querySelector方法返回匹配指定的CSS选择器的元素节点。如果有多个节点满足匹配条件，则返回第一个匹配的节点。如果没有发现匹配的节点，则返回null。</p>
+<p>  var el1 = document.querySelector(“.myclass”);<br>  var el2 = document.querySelector(‘#myParent &gt; [ng-click]’);<br>querySelector方法无法选中CSS伪元素。</p>
+<p><strong>querySelectorAll() //(查找所有符合要求的元素)</strong></p>
+<p>querySelectorAll方法返回匹配指定的CSS选择器的所有节点，返回的是NodeList类型的对象。NodeList对象不是动态集合，所以元素节点的变化无法实时反映在返回结果中。</p>
+<pre><code>elementList = document.querySelectorAll(selectors);
+</code></pre><p>querySelectorAll方法的参数，可以是逗号分隔的多个CSS选择器，返回所有匹配其中一个选择器的元素。</p>
+<pre><code>var matches = document.querySelectorAll(&quot;div.note, div.alert&quot;);
+</code></pre><p><strong>4：如何创建一个元素？如何给元素设置属性？如何删除属性</strong></p>
+<pre><code>&lt;div id=&quot;ct&quot;&gt;
+   &lt;p&gt;hello world&lt;/p&gt;
+ &lt;/div&gt;
+ &lt;script&gt;
+   var ct = document.getElementById(&quot;ct&quot;);
+   // 获取div
+   var newLine = document.createElement(&quot;a&quot;);
+   // 获取a
+   newLine.setAttribute(&quot;href&quot;, &quot;http://www.baidu.com&quot;)
+   // 给a设置元素属性
+   ct.appendChild(newLine);
+   // 在div里面添加a元素
+   newLine.removeAttribute(&quot;href&quot;);
+   // 删除a的href元素属性
+ &lt;/script&gt;
+</code></pre><p><strong>5：如何给页面元素添加子元素？如何删除页面元素下的子元素?</strong></p>
+<pre><code>&lt;div id=&quot;ct&quot;&gt;
+   &lt;p&gt;hello&lt;/p&gt;
+ &lt;/div&gt;
+ &lt;script&gt;
+   var ct = document.getElementById(&quot;ct&quot;);
+   // 获取div
+   var paras = document.createElement(&quot;span&quot;);
+   paras.innerText = &quot;world&quot;;
+   ct.appendChild(paras);
+   // 在div里添加span,并添加内容&quot;world&quot;
+   var el1 = document.querySelector(&quot;p&quot;)
+   ct.removeChild(el1);
+   //删除p标签 
+ &lt;/script&gt;
+</code></pre><p><strong>6： element.classList有哪些方法？如何判断一个元素的 class 列表中是包含某个 class？如何添加一个class？如何删除一个class?</strong></p>
+<p><strong>element.classList所有方法介绍如下：</strong></p>
+<ul>
+<li>add ： 为DOM对象加class。</li>
+<li>remove ：从DOM对象删class 。</li>
+<li>contains ：检测DOM对象是否已经应用了某class。</li>
+<li>toggle ：若DOM对象已经应用了某class则删除，若未应用则添加。</li>
+<li>item ：获取指定下表的class名字。</li>
+</ul>
+<p><strong>判断、添加和删除class：</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;head&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1 class=&quot;title&quot;&gt;hello world&lt;/h1&gt;
+    &lt;script&gt;
+      var title = document.querySelector(&apos;.title&apos;);
+      title.classList.contains(&apos;title&apos;);
+      //判断一个元素的 class 列表中是否包含title
+      title.classList.add(&apos;heading&apos;);
+      // 添加一个class
+      title.classList.remove(&apos;heading&apos;);
+      //删除该class
+    &lt;/script&gt;
+&lt;/body&gt;
+</code></pre><p><strong>7： 如何选中如下代码所有的li元素？ 如何选中btn元素？</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;head&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;mod-tabs&quot;&gt;
+     &lt;ul&gt;
+         &lt;li&gt;list1&lt;/li&gt;
+         &lt;li&gt;list2&lt;/li&gt;
+         &lt;li&gt;list3&lt;/li&gt;
+     &lt;/ul&gt;
+     &lt;button class=&quot;btn&quot;&gt;点我&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+    var AllLi1 = document.getElementsByTagName(&apos;li&apos;)
+    var AllLi2 = document.querySelectorAll(&apos;.mod-tabs ul&gt;li&apos;)
+    var button1 = document.getElementsByClassName(&apos;btn&apos;)
+    var button2 = document.querySelectorAll(&apos;.mod-tabs .btn&apos;)
+    console.log(AllLi1)
+    console.log(AllLi2)
+    console.log(button1)
+    console.log(button2)
+  &lt;/script&gt;
+&lt;/body&gt;
+</code></pre>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/06/15/DOM操作/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-第一篇Bolg" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
