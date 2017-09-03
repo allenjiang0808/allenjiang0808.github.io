@@ -238,7 +238,9 @@ console.log(ct.innerHTML)
 <p><strong>ES5的元素</strong></p>
 <p><strong>querySelector() //(查找第一个符合要求的元素)</strong></p>
 <p>querySelector方法返回匹配指定的CSS选择器的元素节点。如果有多个节点满足匹配条件，则返回第一个匹配的节点。如果没有发现匹配的节点，则返回null。</p>
-<p>  var el1 = document.querySelector(“.myclass”);<br>  var el2 = document.querySelector(‘#myParent &gt; [ng-click]’);<br>querySelector方法无法选中CSS伪元素。</p>
+<pre><code>var el1 = document.querySelector(&quot;.myclass&quot;);
+ var el2 = document.querySelector(&apos;#myParent &gt; [ng-click]&apos;);
+</code></pre><p>querySelector方法无法选中CSS伪元素。</p>
 <p><strong>querySelectorAll() //(查找所有符合要求的元素)</strong></p>
 <p>querySelectorAll方法返回匹配指定的CSS选择器的所有节点，返回的是NodeList类型的对象。NodeList对象不是动态集合，所以元素节点的变化无法实时反映在返回结果中。</p>
 <pre><code>elementList = document.querySelectorAll(selectors);
